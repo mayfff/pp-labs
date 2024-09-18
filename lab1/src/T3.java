@@ -53,10 +53,12 @@ public class T3 extends Thread {
                         break;
                 }
             }
-
         }
+
         int result = helper.findMatrixMin(helper.matrixVectorMultiply(helper.matrixTranspose(helper.matrixMultiply(MP, MM)), O)) + helper.vectorMultiply(R, helper.sortVector(S));
-        System.out.printf("Thread %s. Result = %d\n", name, result);
+        if (N < 10) {
+            System.out.printf("Thread %s. Result = %d\n", name, result);
+        }
         System.out.printf("%s is finished.\n", name);
     }
 }

@@ -50,10 +50,11 @@ public class T1 extends Thread {
                         break;
                 }
             }
-
         }
+
         int result = helper.findMatrixMax(helper.matrixMultiply(MA, MB)) * helper.vectorMultiply(A, B);
-        System.out.printf("Thread %s. Result = %d\n", name, result);
-        System.out.printf("%s is finished.\n", name);
+        if (N < 10) {
+            System.out.printf("Thread %s. Result = %d\n", name, result);
+        }
     }
 }

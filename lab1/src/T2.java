@@ -46,9 +46,8 @@ public class T2 extends Thread {
                         break;
                 }
             }
-
-
         }
+
         int[][] result = helper.sortMatrix(helper.addMatrix(MF, helper.matrixMultiply(MG, MH)));
         if (N < 5) {
             System.out.printf("Thread %s. Result: \n", name);
