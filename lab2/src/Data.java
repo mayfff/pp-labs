@@ -15,44 +15,55 @@ public class Data {
         return vector;
     }
 
-    public static int[][] matrixMultiply(int[][] matrix1, int[][] matrix2) {
-        int[][] result = new int[matrix1.length][matrix1.length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1.length; j++) {
-                for (int k = 0; k < matrix1.length; k++) {
-                    result[i][j] += matrix1[i][k] * matrix2[k][j];
+    public static int[][] matrixMultiply(int[][] matrix1, int[][] matrix2, int startRow, int endRow) {
+        int n = matrix1.length;
+        int[][] result = new int[endRow - startRow][n];
+
+        for (int i = startRow; i < endRow; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i - startRow][j] += matrix1[i][k] * matrix2[k][j];
                 }
             }
         }
         return result;
     }
 
-    public static int[][] matrixScalarMultiply(int[][] matrix, int scalarValue) {
+    public static int[] vectorMatrixMultiply(int[] vector, int[][] matrix, int begin, int end) {
+        int numCols = end - begin;
+        int[] result = new int[numCols];
+
+        int[][] slicedMatrix = new int[matrix.length][numCols];
         for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                matrix[i][j] *= scalarValue;
+            for (int j = 0; j < numCols; j++) {
+                slicedMatrix[i][j] = matrix[i][begin + j];
             }
         }
-        return matrix;
-    }
 
-    public static int[] vectorMatrixMultiply(int[] vector, int[][] matrix) {
-        int[] result = new int[vector.length];
-
-        for (int j = 0; j < vector.length; j++) {
-            for (int k = 0; k < vector.length; k++) {
-                result[j] += matrix[k][j] * vector[k];
+        for (int i = 0; i < slicedMatrix.length; i++) {
+            for (int j = 0; j < slicedMatrix[i].length; j++) {
+                result[j] += slicedMatrix[i][j] * vector[i];
             }
         }
 
         return result;
     }
 
-    public static int vectorMultiply(int[] vector1, int[] vector2) {
+    public static int vectorMultiply(int[] vector1, int[] vector2, int begin, int end) {
         int result = 0;
 
-        for (int i = 0; i < vector1.length; i++) {
-            result += vector1[i] * vector2[i];
+        for (int k = begin; k < end; k++) {
+            result += vector1[k] * vector2[k];
+        }
+
+        return result;
+    }
+
+    public static int[] vectorScalarMultiply(int[] vector, int scalarValue, int begin, int end) {
+        int[] result = new int[end - begin];
+
+        for (int i = 0; i < end - begin; i++) {
+            result[i] = vector[i + begin] * scalarValue;
         }
 
         return result;
@@ -62,12 +73,36 @@ public class Data {
         for (int i = 0; i < vector.length; i++) {
             vector[i] *= scalarValue;
         }
+
         return vector;
+    }
+
+    public static int[] addVectors(int[] vector1, int[] vector2) {
+        for (int i = 0; i < vector1.length; i++) {
+            vector1[i] += vector2[i];
+        }
+
+        return vector1;
     }
 
     public static void printVector(int[] vector) {
         for (int num : vector) {
             System.out.print(num + " ");
+        }
+    }
+
+    public static void makeMatrix(int[][] matrix, int[][] slice, int begin, int end) {
+        for (int i = begin; i < end; i++) {
+            for (int j = 0; j < slice[i - begin].length; j++) {
+                matrix[i][j] = slice[i - begin][j];
+            }
+        }
+    }
+
+    public static void makeFinalVector(int[] Z, int[] Zh, int begin, int end) {
+        int ind = 0;
+        for (int i = begin; i < end; i++) {
+            Z[i] = Zh[ind++];
         }
     }
 }

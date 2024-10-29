@@ -12,18 +12,36 @@
 
 import java.util.Scanner;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
     private static final int NUMBER_OF_THREADS = 4;
 
-    public static final CyclicBarrier B = new CyclicBarrier(NUMBER_OF_THREADS, () -> {
+    // Barrier for controlling input from all threads
+    public static final CyclicBarrier B1 = new CyclicBarrier(NUMBER_OF_THREADS, () -> {
         System.out.println("All data have been inputted successfully");
     });
 
+    public static final CyclicBarrier B2 = new CyclicBarrier(NUMBER_OF_THREADS);
+
+    // Lock to control access to System.in
     public static final Lock CS1 = new ReentrantLock();
+    // Lock to control access to shared x
     public static final Lock CS2 = new ReentrantLock();
+
+    // Semaphore to control access to MB shared matrix;
+    public static final Semaphore S1 = new Semaphore(1);
+    // Semaphore to synchronize T2, T3, T4 with the completion of the calculation of 'm' in T1
+    public static final Semaphore S2 = new Semaphore(0);
+    // Semaphore to synchronize T1, T3, T4 with the completion of the calculation of 'MT' in T2
+    public static final Semaphore S3 = new Semaphore(0);
+    // Semaphore to synchronize T1, T2, T4 with the completion of the calculation of 'MT' in T3
+    public static final Semaphore S4 = new Semaphore(0);
+    // Semaphore to synchronize T1, T2, T3 with the completion of the calculation of 'MT' in T4
+    public static final Semaphore S5 = new Semaphore(0);
+    public static final Semaphore S6 = new Semaphore(1);
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
@@ -55,6 +73,6 @@ public class Main {
         }
 
         long end = System.currentTimeMillis();
-        System.out.println("Time taken: " + (end - start) + " ms.");
+        System.out.println("\nTime taken: " + (end - start) + " ms.");
     }
 }
