@@ -6,11 +6,6 @@
 using namespace std;
 
 int main() {
-	omp_lock_t Lock1;
-	omp_init_lock(&Lock1);
-	omp_lock_t Lock2;
-	omp_init_lock(&Lock2);
-
 	cout << "enter N = ";
 	cin >> Data::N;
 	int P = 4;
